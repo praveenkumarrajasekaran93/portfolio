@@ -35,6 +35,30 @@ navLinks.forEach(link => {
     });
 });
 
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    const isClickInNavbar = navbar.contains(e.target);
+    const isMenuOpen = navLinksContainer.classList.contains('active');
+    if (!isClickInNavbar && isMenuOpen) {
+        mobileToggle.classList.remove('active');
+        navLinksContainer.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Close mobile menu with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const isMenuOpen = navLinksContainer.classList.contains('active');
+        if (isMenuOpen) {
+            mobileToggle.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+            mobileToggle.focus();
+        }
+    }
+});
+
 // Smooth scroll and active link highlighting
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section');
