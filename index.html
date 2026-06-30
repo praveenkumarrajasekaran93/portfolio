@@ -3,17 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Praveen Kumar - DevOps Cloud Engineer</title>
+    <title>Praveen Kumar Rajasekaran - DevOps Cloud Engineer & System Administrator</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Praveen Kumar Rajasekaran — DevOps Cloud Engineer and Senior System Administrator with 9 years of experience in AWS, CI/CD automation, Docker, Kubernetes, Terraform, and application security. Based in Bangalore, India.">
+    <meta name="author" content="Praveen Kumar Rajasekaran">
+    <meta name="keywords" content="DevOps, Cloud Engineer, AWS, CI/CD, Docker, Kubernetes, Terraform, System Administrator, Linux, Penetration Testing, Bangalore">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Praveen Kumar Rajasekaran - DevOps Cloud Engineer">
+    <meta property="og:description" content="Senior System Administrator | DevOps Cloud Engineer | AI Integration Specialist with 9 years of experience.">
+    <meta property="og:url" content="https://praveenkumarrajasekaran93.github.io/">
+    <meta property="og:image" content="https://praveenkumarrajasekaran93.github.io/preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Praveen Kumar Rajasekaran - DevOps Cloud Engineer">
+    <meta name="twitter:description" content="Senior System Administrator | DevOps Cloud Engineer | AI Integration Specialist with 9 years of experience.">
+
+    <!-- Favicon (inline SVG, no external asset) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236200ea'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0a'/%3E%3Ctext x='50' y='70' font-family='Arial,sans-serif' font-size='54' font-weight='bold' text-anchor='middle' fill='url(%23g)'%3EPK%3C/text%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured data for richer search results -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Praveen Kumar Rajasekaran",
+        "jobTitle": "DevOps Cloud Engineer",
+        "email": "mailto:praveenkumarrajasekaran93@gmail.com",
+        "telephone": "+91-8056804695",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bangalore",
+            "addressRegion": "Karnataka",
+            "addressCountry": "India"
+        },
+        "worksFor": {
+            "@type": "Organization",
+            "name": "Idea Infinity IT Solution Pvt. Ltd."
+        },
+        "url": "https://praveenkumarrajasekaran93.github.io/",
+        "sameAs": [
+            "https://www.linkedin.com/in/praveen-kumar-itconsultant",
+            "https://github.com/praveenkumarrajasekaran93"
+        ],
+        "knowsAbout": ["DevOps", "AWS", "CI/CD", "Docker", "Kubernetes", "Terraform", "Linux Administration", "Penetration Testing"]
+    }
+    </script>
 </head>
 <body>
+    <!-- Skip link for keyboard users -->
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-content">
-            <div class="nav-logo">PK</div>
+            <a href="#home" class="nav-logo">PK</a>
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -21,29 +72,33 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#certifications">Certifications</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="mobile-toggle">
+            <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
+    <main id="main">
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container hero-content">
+            <span class="availability-badge fade-in"><span class="status-dot" aria-hidden="true"></span>Open to opportunities</span>
             <h1 class="hero-title fade-in">PRAVEEN KUMAR RAJASEKARAN</h1>
-            <p class="hero-subtitle fade-in">Senior System Administrator | DevOps Cloud Engineer</p>
+            <p class="hero-subtitle fade-in">Senior System Administrator | DevOps Cloud Engineer | AI Integration Specialist</p>
             <p class="hero-description fade-in">
                 A highly skilled DevOps Cloud Engineer with 9 years of industry experience, including 6 years as a Senior System Administrator
                 and 3 years specializing in DevOps practices. Expertise in cloud infrastructure, automation, and application security.
+                Passionate about building static &amp; dynamic websites and leveraging AI tools like Claude Code for code generation and optimization.
             </p>
             <div class="hero-cta">
                 <a href="#contact" class="btn btn-primary fade-in">Get In Touch</a>
                 <a href="#projects" class="btn btn-outline fade-in">View Projects</a>
+                <!-- To enable: add resume.pdf to this folder and uncomment the button below -->
+                <!-- <a href="resume.pdf" class="btn btn-outline fade-in" download>Download Resume</a> -->
             </div>
         </div>
     </section>
@@ -56,10 +111,12 @@
             </div>
             <div class="about-content">
                 <div class="about-image slide-up">
-                    <div class="about-image-placeholder">PK</div>
+                    <!-- To use a real photo: replace the line below with
+                         <img src="profile.jpg" alt="Praveen Kumar Rajasekaran" class="about-image-photo"> -->
+                    <div class="about-image-placeholder" aria-hidden="true">PK</div>
                 </div>
                 <div class="about-text slide-up">
-                    <h3>DevOps Cloud Engineer & Senior System Administrator</h3>
+                    <h3>DevOps Cloud Engineer &amp; Senior System Administrator</h3>
                     <p>
                         I'm a dedicated technology professional with extensive experience in designing and deploying scalable multi-cloud
                         environments. My expertise spans cloud infrastructure management, CI/CD pipeline automation, and ensuring application
@@ -105,13 +162,13 @@
                     <div class="timeline-content">
                         <span class="timeline-date">February 2021 - Present</span>
                         <h3>DevOps Cloud Engineer</h3>
-                        <h4 style="color: var(--accent-2); margin-bottom: 1rem;">Idea Infinity IT Solution Pvt. Ltd.</h4>
-                        <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
+                        <h4 class="timeline-company">Idea Infinity IT Solution Pvt. Ltd.</h4>
+                        <ul class="timeline-list">
                             <li>Designing and deploying scalable cloud architectures for multi-cloud environments</li>
-                            <li>Automating deployment pipelines & optimizing CI/CD processes using Jenkins, GitLab, & Terraform</li>
-                            <li>Managing containerized environments with Docker & Kubernetes for auto-scaling</li>
+                            <li>Automating deployment pipelines &amp; optimizing CI/CD processes using Jenkins, GitLab, &amp; Terraform</li>
+                            <li>Managing containerized environments with Docker &amp; Kubernetes for auto-scaling</li>
                             <li>Leading AWS cloud infrastructure with focus on security and cost optimization</li>
-                            <li>Implementing load balancing solutions using NGINX & HAProxy</li>
+                            <li>Implementing load balancing solutions using NGINX &amp; HAProxy</li>
                             <li>Conducting penetration testing and vulnerability assessments</li>
                             <li>Leading IT teams and mentoring professionals</li>
                         </ul>
@@ -124,14 +181,14 @@
                     <div class="timeline-content">
                         <span class="timeline-date">August 2016 - January 2021</span>
                         <h3>Senior System Administrator</h3>
-                        <h4 style="color: var(--accent-2); margin-bottom: 1rem;">Idea Infinity IT Solution Pvt. Ltd.</h4>
-                        <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
-                            <li>Administered Linux & Windows servers ensuring system availability</li>
-                            <li>Implemented firewall solutions using SonicWall & FortiGate</li>
+                        <h4 class="timeline-company">Idea Infinity IT Solution Pvt. Ltd.</h4>
+                        <ul class="timeline-list">
+                            <li>Administered Linux &amp; Windows servers ensuring system availability</li>
+                            <li>Implemented firewall solutions using SonicWall &amp; FortiGate</li>
                             <li>Optimized virtualized environments (Proxmox, ESXi, vCenter)</li>
                             <li>Conducted security audits and penetration testing</li>
                             <li>Managed Nagios Core for proactive monitoring</li>
-                            <li>Provided tier 2 & 3 technical support</li>
+                            <li>Provided tier 2 &amp; 3 technical support</li>
                         </ul>
                     </div>
                 </div>
@@ -142,8 +199,8 @@
                     <div class="timeline-content">
                         <span class="timeline-date">November 2015 - July 2016</span>
                         <h3>Junior Network Engineer</h3>
-                        <h4 style="color: var(--accent-2); margin-bottom: 1rem;">Tata Teleservice, Bangalore</h4>
-                        <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
+                        <h4 class="timeline-company">Tata Teleservice, Bangalore</h4>
+                        <ul class="timeline-list">
                             <li>Configured and troubleshooted DSL modems and routers</li>
                             <li>Managed DSLAM servers for broadband services</li>
                             <li>Provided customer support and network troubleshooting</li>
@@ -164,7 +221,7 @@
             <div class="projects-grid">
                 <!-- Project 1 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">☁️</div>
+                    <div class="project-image" aria-hidden="true">☁️</div>
                     <div class="project-content">
                         <h3>Multi-Cloud Infrastructure Migration</h3>
                         <p>Migrated 200+ instances from physical servers to Proxmox virtualized environment with clustering and SAN storage for improved scalability.</p>
@@ -178,9 +235,9 @@
 
                 <!-- Project 2 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">📧</div>
+                    <div class="project-image" aria-hidden="true">📧</div>
                     <div class="project-content">
-                        <h3>Email Migration & Exchange Server</h3>
+                        <h3>Email Migration &amp; Exchange Server</h3>
                         <p>Successfully migrated 300+ employee email mailboxes to on-premises HMail Exchange server, ensuring seamless communication.</p>
                         <div class="project-tags">
                             <span class="tag">HMail</span>
@@ -191,7 +248,7 @@
 
                 <!-- Project 3 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">🔒</div>
+                    <div class="project-image" aria-hidden="true">🔒</div>
                     <div class="project-content">
                         <h3>Endpoint Security Implementation</h3>
                         <p>Led endpoint security implementation across organization using Sequrite, providing advanced antivirus and security features.</p>
@@ -204,7 +261,7 @@
 
                 <!-- Project 4 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">🔐</div>
+                    <div class="project-image" aria-hidden="true">🔐</div>
                     <div class="project-content">
                         <h3>PostgreSQL Active Directory Integration</h3>
                         <p>Implemented access control in PostgreSQL integrated with Active Directory for enhanced security and high availability.</p>
@@ -218,7 +275,7 @@
 
                 <!-- Project 5 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">🤖</div>
+                    <div class="project-image" aria-hidden="true">🤖</div>
                     <div class="project-content">
                         <h3>AI-Based OCR Mobile Module</h3>
                         <p>Led developer team to implement AI-based OCR module in a mobile application, utilizing new technologies recognized by IdeaInfinity.</p>
@@ -231,7 +288,7 @@
 
                 <!-- Project 6 -->
                 <div class="project-card slide-up">
-                    <div class="project-image">📊</div>
+                    <div class="project-image" aria-hidden="true">📊</div>
                     <div class="project-content">
                         <h3>Nagios Enterprise Monitoring</h3>
                         <p>Implemented Nagios Core for enterprise-level monitoring across 200+ instances, enhancing system reliability and efficiency.</p>
@@ -253,31 +310,31 @@
             </div>
             <div class="certifications-grid">
                 <div class="cert-card slide-up">
-                    <div class="cert-icon">📜</div>
+                    <div class="cert-icon" aria-hidden="true">📜</div>
                     <div>
                         <h3>CCNA</h3>
-                        <p style="color: var(--text-secondary); margin: 0;">Cisco Certified Network Associate</p>
+                        <p class="muted">Cisco Certified Network Associate</p>
                     </div>
                 </div>
                 <div class="cert-card slide-up">
-                    <div class="cert-icon">⚙️</div>
+                    <div class="cert-icon" aria-hidden="true">⚙️</div>
                     <div>
                         <h3>DevOps Training</h3>
-                        <p style="color: var(--text-secondary); margin: 0;">Tools and Automation Practices</p>
+                        <p class="muted">Tools and Automation Practices</p>
                     </div>
                 </div>
                 <div class="cert-card slide-up">
-                    <div class="cert-icon">🛡️</div>
+                    <div class="cert-icon" aria-hidden="true">🛡️</div>
                     <div>
                         <h3>Cybersecurity</h3>
-                        <p style="color: var(--text-secondary); margin: 0;">Fundamentals and Advanced Techniques</p>
+                        <p class="muted">Fundamentals and Advanced Techniques</p>
                     </div>
                 </div>
                 <div class="cert-card slide-up">
-                    <div class="cert-icon">🎯</div>
+                    <div class="cert-icon" aria-hidden="true">🎯</div>
                     <div>
                         <h3>Penetration Testing</h3>
-                        <p style="color: var(--text-secondary); margin: 0;">Vulnerability Assessment and Exploitation</p>
+                        <p class="muted">Vulnerability Assessment and Exploitation</p>
                     </div>
                 </div>
             </div>
@@ -296,61 +353,9 @@
                     <div class="timeline-content">
                         <span class="timeline-date">2015</span>
                         <h3>Bachelor of Engineering (B.E.)</h3>
-                        <h4 style="color: var(--accent-2); margin-bottom: 1rem;">Electronics & Communication</h4>
-                        <p style="color: var(--text-secondary);">Sri Ramakrishna Engineering College, Coimbatore</p>
-                        <p style="color: var(--text-secondary);">Graduated with distinction, GPA: 7.5</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="section section-dark">
-        <div class="container">
-            <div class="section-title">
-                <h2 class="slide-up">Testimonials</h2>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card slide-up">
-                    <p class="testimonial-text">
-                        Praveen's expertise in cloud infrastructure and DevOps practices has been instrumental in scaling our operations.
-                        His ability to automate complex deployment pipelines while maintaining security standards is exceptional.
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div>
-                            <h4>Sarah Mitchell</h4>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem;">CTO, IdeaInfinity</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card slide-up">
-                    <p class="testimonial-text">
-                        An outstanding professional who led our team through a successful migration of 300+ email accounts.
-                        Praveen's proactive approach and technical excellence earned him the "ACE Performance of the Year 2025" award.
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div>
-                            <h4>Michael Chen</h4>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Project Manager, IdeaInfinity</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card slide-up">
-                    <p class="testimonial-text">
-                        Praveen's leadership in implementing security protocols and his deep knowledge in penetration testing
-                        have significantly strengthened our infrastructure security posture.
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar"></div>
-                        <div>
-                            <h4>Jennifer Rodriguez</h4>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Security Lead, IdeaInfinity</p>
-                        </div>
+                        <h4 class="timeline-company">Electronics &amp; Communication</h4>
+                        <p class="muted">Sri Ramakrishna Engineering College, Coimbatore</p>
+                        <p class="muted">Graduated with distinction, GPA: 7.5</p>
                     </div>
                 </div>
             </div>
@@ -372,57 +377,73 @@
                     </p>
                     <div class="contact-details">
                         <div class="contact-item">
-                            <div class="contact-icon">📱</div>
+                            <div class="contact-icon" aria-hidden="true">📱</div>
                             <div>
                                 <strong>Phone</strong>
-                                <p style="color: var(--text-secondary); margin: 0;">+91 8056804695</p>
+                                <p class="muted"><a href="tel:+918056804695" class="contact-value">+91 8056804695</a></p>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">✉️</div>
+                            <div class="contact-icon" aria-hidden="true">✉️</div>
                             <div>
                                 <strong>Email</strong>
-                                <p style="color: var(--text-secondary); margin: 0;">praveenkumarrajasekaran93@gmail.com</p>
+                                <p class="muted"><a href="mailto:praveenkumarrajasekaran93@gmail.com" class="contact-value">praveenkumarrajasekaran93@gmail.com</a></p>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">📍</div>
+                            <div class="contact-icon" aria-hidden="true">📍</div>
                             <div>
                                 <strong>Location</strong>
-                                <p style="color: var(--text-secondary); margin: 0;">Bangalore, Karnataka, India</p>
+                                <p class="muted">Bangalore, Karnataka, India</p>
                             </div>
                         </div>
                     </div>
                     <div class="social-links">
-                        <a href="https://www.linkedin.com/in/praveen-kumar-itconsultant" class="social-link" target="_blank" aria-label="LinkedIn">🔗</a>
-                        <a href="https://github.com/praveenkumarrajasekaran93" class="social-link" target="_blank" aria-label="GitHub">🐙</a>
-                        <a href="mailto:praveenkumarrajasekaran93@gmail.com" class="social-link" aria-label="Email">✉️</a>
+                        <a href="https://www.linkedin.com/in/praveen-kumar-itconsultant" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://github.com/praveenkumarrajasekaran93" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <a href="mailto:praveenkumarrajasekaran93@gmail.com" class="social-link" aria-label="Send email">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
+                        </a>
                     </div>
                 </div>
                 <div class="contact-form slide-up">
-                    <form id="contactForm">
-                        <div style="margin-bottom: 1.5rem;">
-                            <input type="text" placeholder="Your Name" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary);">
+                    <form id="contactForm" novalidate>
+                        <div class="form-group">
+                            <label for="cf-name" class="sr-only">Your Name</label>
+                            <input type="text" id="cf-name" name="name" placeholder="Your Name" required class="form-input">
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <input type="email" placeholder="Your Email" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary);">
+                        <div class="form-group">
+                            <label for="cf-email" class="sr-only">Your Email</label>
+                            <input type="email" id="cf-email" name="email" placeholder="Your Email" required class="form-input">
                         </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <textarea placeholder="Your Message" rows="5" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); resize: vertical;"></textarea>
+                        <div class="form-group">
+                            <label for="cf-message" class="sr-only">Your Message</label>
+                            <textarea id="cf-message" name="message" placeholder="Your Message" rows="5" required class="form-input form-textarea"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                        <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                        <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Praveen Kumar Rajasekaran. All rights reserved.</p>
+            <p>&copy; <span id="year">2026</span> Praveen Kumar Rajasekaran. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Scroll to top -->
+    <button id="scrollTop" class="scroll-top" aria-label="Scroll to top">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <script src="script.js"></script>
 </body>
