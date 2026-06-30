@@ -1,0 +1,12 @@
+# Aider & cache files
+.aider*
+*-tags-cache*
+
+# Original profile documents (not needed in repo)
+PRAVEENKUMAR_PR.pdf
+PRAVEENKUMAR_PR.txt
+
+# Track only portfolio files
+!index.html
+!styles.css
+!script.js
