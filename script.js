@@ -655,19 +655,17 @@ function dlIconMarkup() {
     return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
 }
 
-// A friendly filename for the saved download, e.g. PraveenKumar_Amazon.docx
+// A friendly filename for the saved download, e.g. PraveenKumar_Amazon.pdf
 function dlFileName(template) {
     const base = 'PraveenKumar_' + String(template.label).replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '');
-    const ext = (String(template.file).split('.').pop() || 'docx');
-    return base + '.' + ext;
+    return base + '.pdf';
 }
 
 // ------------------------------------------------------------
-// Map the master PROFILE_DATA into the flat shape the .docx
-// merge fields expect. This is the SINGLE mapping used for every
-// template, so all downloads always reflect the latest data.
-// (Field names here must match the {tags} inside the templates —
-//  see TEMPLATE_FIELD_GUIDE.md.)
+// Map the master PROFILE_DATA into the flat shape the PDF layouts
+// expect. This is the SINGLE mapping used for every template, so
+// all downloads always reflect the latest data. (The keys here are
+// what the layout builders in resume-pdf.js read from.)
 // ------------------------------------------------------------
 function buildResumeData() {
     const P = window.PROFILE_DATA;
@@ -699,58 +697,33 @@ function buildResumeData() {
     };
 }
 
-// Trigger a browser download for a generated Blob
-function dlSaveBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
-}
-
-// Fill the chosen .docx template with the latest master data and download it
+// Build the chosen layout as a PDF from the latest master data and download it.
+// Fully client-side via pdfmake (vendor/pdfmake.min.js + vfs_fonts.js) — no fetch,
+// no server, works the same on GitHub Pages and offline.
 function generateResume(template, cardEl) {
-    const PizZip = window.PizZip;
-    const DocxtemplaterModule = window.docxtemplater;
-    const Docxtemplater = DocxtemplaterModule && (DocxtemplaterModule.default || DocxtemplaterModule);
+    const pdfMake = window.pdfMake;
+    const buildDoc = window.buildResumePdfDoc;
 
-    if (!PizZip || !Docxtemplater) {
+    if (!pdfMake || typeof pdfMake.createPdf !== 'function' || typeof buildDoc !== 'function') {
         dlSetStatus('Resume engine not loaded. Please refresh and try again.', 'error');
         return;
     }
     if (cardEl) cardEl.classList.add('is-loading');
     dlSetStatus('Building your ' + template.label + ' resume…', 'working');
 
-    fetch(template.file)
-        .then((res) => {
-            if (!res.ok) throw new Error('template-missing');
-            return res.arrayBuffer();
-        })
-        .then((buf) => {
-            const zip = new PizZip(buf);
-            const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
-            doc.render(buildResumeData());
-            const out = doc.getZip().generate({
-                type: 'blob',
-                mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            });
-            dlSaveBlob(out, dlFileName(template));
+    try {
+        const docDefinition = buildDoc(template.id, buildResumeData());
+        pdfMake.createPdf(docDefinition).download(dlFileName(template), () => {
             dlSetStatus('Downloaded ✓  Your ' + template.label + ' resume is ready.', 'success');
             setTimeout(closeDownloadModal, 1200);
-        })
-        .catch((err) => {
-            if (err && err.message === 'template-missing') {
-                markUnavailable(template.id);
-                dlSetStatus('That template file isn\'t uploaded yet.', 'error');
-            } else {
-                dlSetStatus('Sorry — could not build that resume. See console for details.', 'error');
-                // eslint-disable-next-line no-console
-                console.error('Resume generation failed:', err);
-            }
-        })
-        .finally(() => { if (cardEl) cardEl.classList.remove('is-loading'); });
+            if (cardEl) cardEl.classList.remove('is-loading');
+        });
+    } catch (err) {
+        dlSetStatus('Sorry — could not build that resume. See console for details.', 'error');
+        // eslint-disable-next-line no-console
+        console.error('Resume generation failed:', err);
+        if (cardEl) cardEl.classList.remove('is-loading');
+    }
 }
 
 function dlSetStatus(msg, kind) {
@@ -784,15 +757,12 @@ function renderTemplates() {
     verifyTemplateAvailability(list);
 }
 
-// On served (http/https) sites, disable cards whose file is missing so
-// visitors never hit a broken download. Skipped on file:// where HEAD
-// requests aren't reliable.
+// Disable any card that has no matching PDF layout builder, so visitors
+// never pick a template we can't actually generate.
 function verifyTemplateAvailability(list) {
-    if (location.protocol === 'file:') return;
+    const builders = window.RESUME_PDF_BUILDERS || {};
     list.forEach((t) => {
-        fetch(t.file, { method: 'HEAD' })
-            .then((res) => { if (!res.ok) markUnavailable(t.id); })
-            .catch(() => { /* network/permission hiccup — leave the card enabled */ });
+        if (!builders[t.id]) markUnavailable(t.id);
     });
 }
 
@@ -804,7 +774,7 @@ function markUnavailable(id) {
     card.setAttribute('disabled', 'disabled');
     card.setAttribute('aria-disabled', 'true');
     const desc = card.querySelector('.dl-card-desc');
-    if (desc) desc.textContent = 'Coming soon — file not uploaded yet.';
+    if (desc) desc.textContent = 'Coming soon — layout not available yet.';
 }
 
 function openDownloadModal() {

@@ -20,14 +20,13 @@ python -m http.server 8000   # then visit http://localhost:8000
 - `index.html` — page skeleton and section containers. Content sections (`about`, `experience`, `projects`, `certifications`, `education`, `contact`) are **empty containers filled at runtime by `script.js` from `PROFILE_DATA`** — do NOT hardcode content here. Includes inline JSON-LD, Open Graph/Twitter meta, inline SVG favicon.
 - `styles.css` — dark theme, design tokens as CSS custom properties on `:root`. Includes the floating download button (`.download-fab`) and template-chooser modal (`.dl-modal`).
 - `script.js` — vanilla JS: navbar/scroll-spy/mobile menu/animations/scroll-top/contact-form, **plus** `renderSite()` (renders sections from `PROFILE_DATA`) and the resume download engine (`buildResumeData()` + `generateResume()`).
-- `resume-templates.js` — registry (`window.RESUME_TEMPLATES`) of downloadable `.docx` layouts shown in the download modal.
-- `templates/*.docx` — Word merge templates (docxtemplater `{tags}`). Filled with the latest master data at download time. Regenerate the starters with `scratchpad/make_templates.py` (needs `python-docx`).
-- `vendor/pizzip.min.js`, `vendor/docxtemplater.min.js` — the only third-party libs; used client-side to fill `.docx` templates in the browser. Vendored locally (no CDN, no build step).
-- `TEMPLATE_FIELD_GUIDE.md` — the merge-field reference for authoring new `.docx` templates.
+- `resume-templates.js` — registry (`window.RESUME_TEMPLATES`) of downloadable PDF layouts shown in the download modal. Each entry's `id` must match a builder key in `resume-pdf.js` (a card with no matching builder is auto-disabled).
+- `resume-pdf.js` — the PDF layout builders (`window.RESUME_PDF_BUILDERS`, keyed by template id) + `window.buildResumePdfDoc(id, data)`. Each builder takes the flat object from `buildResumeData()` and returns a pdfmake `docDefinition`.
+- `vendor/pdfmake.min.js`, `vendor/vfs_fonts.js` — the only third-party libs (pdfmake 0.2.7 + its embedded Roboto fonts); used client-side to generate the `.pdf` in the browser. Vendored locally (no CDN, no build step). Load order matters: `pdfmake.min.js` before `vfs_fonts.js`.
 
 ## Resume download feature
 
-Floating download button → modal lists `RESUME_TEMPLATES` → picking one fetches that `.docx`, fills it with `buildResumeData()` (mapped from `PROFILE_DATA`) via pizzip+docxtemplater, and downloads an editable `.docx`. The merge-field names in the templates MUST match the keys `buildResumeData()` produces — see `TEMPLATE_FIELD_GUIDE.md`. Adding a template = drop a `.docx` in `templates/` + one entry in `resume-templates.js` (no upload UI by design).
+Floating download button → modal lists `RESUME_TEMPLATES` → picking one calls `buildResumePdfDoc(template.id, buildResumeData())` (data mapped from `PROFILE_DATA`) and `pdfMake.createPdf(...).download()`s a `.pdf`. Fully client-side — no fetch, no server — so it behaves the same locally, on GitHub Pages, and offline. Adding a layout = write a `(data) => docDefinition` builder in `resume-pdf.js` + register it under a new id + add one matching entry in `resume-templates.js` (no upload UI by design).
 
 ## Source-of-truth content
 

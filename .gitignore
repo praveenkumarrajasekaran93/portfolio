@@ -13,8 +13,7 @@ PRAVEENKUMAR_PR.txt
 !profile-data.js
 !resume-templates.js
 
-# Resume engine assets (must deploy so downloads work live)
+# Resume PDF engine assets (must deploy so downloads work live)
+!resume-pdf.js
 !vendor/
 !vendor/**
-!templates/
-!templates/**

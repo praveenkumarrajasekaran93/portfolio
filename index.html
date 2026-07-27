@@ -345,11 +345,12 @@
         </div>
     </div>
 
-    <!-- Master data + resume template engine (order matters: data first) -->
+    <!-- Master data + resume PDF engine (order matters: pdfmake before its fonts, data before script) -->
     <script src="profile-data.js"></script>
-    <script src="vendor/pizzip.min.js"></script>
-    <script src="vendor/docxtemplater.min.js"></script>
+    <script src="vendor/pdfmake.min.js"></script>
+    <script src="vendor/vfs_fonts.js"></script>
     <script src="resume-templates.js"></script>
+    <script src="resume-pdf.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

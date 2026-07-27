@@ -5,8 +5,8 @@
 //  from here:
 //    • the live website (About, Skills, Experience, Projects,
 //      Certifications, Education, Contact all render from this)
-//    • every downloadable resume (your latest data is poured
-//      into the .docx template you pick)
+//    • every downloadable resume (your latest data is rendered
+//      into the PDF layout you pick)
 //
 //  You never edit index.html for content again — just this file.
 //  After editing, refresh the page; downloads use it automatically.
