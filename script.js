@@ -20,6 +20,9 @@ window.addEventListener('scroll', () => {
 
     // Toggle scroll-to-top button
     toggleScrollTopButton();
+
+    // Toggle floating download button
+    toggleDownloadFab();
 });
 
 // Mobile menu toggle
@@ -340,22 +343,8 @@ function initCounters() {
 // ============================================================
 // Skills — core competency meters
 // ============================================================
-const skills = [
-    { name: 'CI/CD Pipeline Automation', level: 95, category: 'DevOps' },
-    { name: 'Cloud Infrastructure (AWS)', level: 90, category: 'Cloud' },
-    { name: 'Docker & Kubernetes', level: 88, category: 'DevOps' },
-    { name: 'Terraform', level: 85, category: 'Infrastructure' },
-    { name: 'Static & Dynamic Website Development', level: 92, category: 'Web Dev', highlight: true, icon: '💻' },
-    { name: 'AI Tools & Cloud Development (Claude Code, GitHub Copilot)', level: 94, category: 'AI', highlight: true, icon: '🤖✨' },
-    { name: 'Linux Administration', level: 92, category: 'System' },
-    { name: 'Load Balancing (NGINX/HAProxy)', level: 87, category: 'Infrastructure' },
-    { name: 'PostgreSQL', level: 82, category: 'Database' },
-    { name: 'Penetration Testing', level: 80, category: 'Security' },
-    { name: 'Jenkins', level: 88, category: 'DevOps' },
-    { name: 'Security Audits', level: 85, category: 'Security' },
-    { name: 'Monitoring (Nagios)', level: 84, category: 'System' },
-    { name: 'Bash & PowerShell', level: 86, category: 'Scripting' }
-];
+// Sourced from the master file (profile-data.js) — the single source of truth.
+const skills = (window.PROFILE_DATA && window.PROFILE_DATA.skills) || [];
 
 function populateSkills() {
     const skillsGrid = document.querySelector('.skills-grid');
@@ -378,17 +367,8 @@ function populateSkills() {
 // ============================================================
 // Skills — categorized tool matrix (terminal-style cards)
 // ============================================================
-const skillMatrix = [
-    { dir: '~/devops-tools', icon: '🚀', items: ['Jenkins', 'GitLab', 'Docker', 'Kubernetes', 'Terraform', 'SonarQube', 'Kafka', 'Git', 'Bugzilla'] },
-    { dir: '~/cloud-and-web', icon: '☁️', items: ['AWS', 'IIS', 'NGINX', 'Apache', '.NET', 'Microservices'] },
-    { dir: '~/security', icon: '🛡️', items: ['SonicWall', 'pfSense', 'FortiGate', 'Sequrite', 'Burp Suite', 'Nmap', 'Nessus', 'ISO 27001'] },
-    { dir: '~/monitoring', icon: '📡', items: ['Nagios Core', 'New Relic', 'Resource Monitoring'] },
-    { dir: '~/virtualization', icon: '🖥️', items: ['Proxmox', 'ESXi', 'vCenter', 'Clustering'] },
-    { dir: '~/servers-and-os', icon: '🐧', items: ['Windows Server', 'SUSE Linux', 'Ubuntu'] },
-    { dir: '~/databases', icon: '🗄️', items: ['Oracle', 'PostgreSQL', 'MSSQL'] },
-    { dir: '~/scripting', icon: '📜', items: ['Bash', 'PowerShell', 'Python'] },
-    { dir: '~/mail-and-bi', icon: '📬', items: ['HMail', 'O365', 'Roundcube', 'Power BI', 'Tableau'] }
-];
+// Sourced from the master file (profile-data.js) — the single source of truth.
+const skillMatrix = (window.PROFILE_DATA && window.PROFILE_DATA.skillMatrix) || [];
 
 function populateSkillMatrix() {
     const matrix = document.querySelector('.skill-matrix');
@@ -466,7 +446,8 @@ function initContactForm() {
 
         const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-        window.location.href = `mailto:praveenkumarrajasekaran93@gmail.com?subject=${subject}&body=${body}`;
+        const toEmail = (window.PROFILE_DATA && window.PROFILE_DATA.contact.email) || 'praveenkumarrajasekaran93@gmail.com';
+        window.location.href = `mailto:${toEmail}?subject=${subject}&body=${body}`;
 
         status.textContent = 'Thanks! Your email app should open with the message ready to send.';
         status.className = 'form-status success';
@@ -488,6 +469,392 @@ if (scrollTopBtn) {
     });
 }
 
+// ============================================================
+// Render website sections from the master profile data
+// (profile-data.js). Editing the master updates the site here.
+// ============================================================
+function esc(s) {
+    return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Newly-injected reveal elements must join the scroll-animation observer
+function revealObserve(root) {
+    if (!root) return;
+    root.querySelectorAll('.fade-in, .slide-up').forEach((el) => animationObserver.observe(el));
+}
+
+function renderHero() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const desc = document.querySelector('.hero-description');
+    if (desc && P.identity.heroDescription) desc.textContent = P.identity.heroDescription;
+    const badge = document.querySelector('.availability-badge');
+    if (badge && P.identity.availability) {
+        badge.innerHTML = '<span class="status-dot" aria-hidden="true"></span>' + esc(P.identity.availability);
+    }
+}
+
+function renderAbout() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const a = P.about || {};
+    const textEl = document.querySelector('#about .about-text');
+    if (textEl) {
+        textEl.innerHTML =
+            '<h3>' + esc(a.role) + '</h3>' +
+            (a.paragraphs || []).map((par) => '<p>' + esc(par) + '</p>').join('') +
+            '<div class="about-highlights">' +
+                (a.highlights || []).map((h) => '<span class="highlight-chip">' + esc(h) + '</span>').join('') +
+            '</div>';
+    }
+    const badgesEl = document.querySelector('#about .about-badges');
+    if (badgesEl) {
+        badgesEl.innerHTML = (a.awards || []).map((w) => '<span class="award-badge">' + esc(w) + '</span>').join('');
+    }
+}
+
+function renderExperience() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const el = document.querySelector('#experience .timeline');
+    if (!el) return;
+    el.innerHTML = (P.experience || []).map((e) =>
+        '<div class="timeline-item slide-up">' +
+            '<div class="timeline-dot"></div>' +
+            '<div class="timeline-content">' +
+                '<span class="timeline-date">' + esc(e.dates) + '</span>' +
+                '<h3>' + esc(e.role) + '</h3>' +
+                '<h4 class="timeline-company">' + esc(e.company) + '</h4>' +
+                '<ul class="timeline-list">' +
+                    (e.bullets || []).map((b) => '<li>' + esc(b) + '</li>').join('') +
+                '</ul>' +
+            '</div>' +
+        '</div>'
+    ).join('');
+    revealObserve(el);
+}
+
+function renderProjects() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const el = document.querySelector('#projects .projects-grid');
+    if (!el) return;
+    el.innerHTML = (P.projects || []).map((pr) =>
+        '<div class="project-card slide-up">' +
+            '<div class="project-image" aria-hidden="true">' + esc(pr.icon) + '</div>' +
+            '<div class="project-content">' +
+                '<h3>' + esc(pr.name) + '</h3>' +
+                '<p>' + esc(pr.description) + '</p>' +
+                '<div class="project-tags">' +
+                    (pr.tags || []).map((t) => '<span class="tag">' + esc(t) + '</span>').join('') +
+                '</div>' +
+            '</div>' +
+        '</div>'
+    ).join('');
+    revealObserve(el);
+}
+
+function renderCertifications() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const el = document.querySelector('#certifications .certifications-grid');
+    if (!el) return;
+    el.innerHTML = (P.certifications || []).map((ct) =>
+        '<div class="cert-card slide-up">' +
+            '<div class="cert-icon" aria-hidden="true">' + esc(ct.icon) + '</div>' +
+            '<div>' +
+                '<h3>' + esc(ct.name) + '</h3>' +
+                '<p class="muted">' + esc(ct.detail) + '</p>' +
+            '</div>' +
+        '</div>'
+    ).join('');
+    revealObserve(el);
+}
+
+function renderEducation() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const el = document.querySelector('#education .timeline');
+    if (!el) return;
+    el.innerHTML = (P.education || []).map((ed) =>
+        '<div class="timeline-item slide-up">' +
+            '<div class="timeline-dot"></div>' +
+            '<div class="timeline-content">' +
+                '<span class="timeline-date">' + esc(ed.dates) + '</span>' +
+                '<h3>' + esc(ed.degree) + '</h3>' +
+                '<h4 class="timeline-company">' + esc(ed.field) + '</h4>' +
+                '<p class="muted">' + esc(ed.institution) + '</p>' +
+                (ed.notes || []).map((n) => '<p class="muted">' + esc(n) + '</p>').join('') +
+            '</div>' +
+        '</div>'
+    ).join('');
+    revealObserve(el);
+}
+
+function renderContact() {
+    const P = window.PROFILE_DATA;
+    if (!P) return;
+    const c = P.contact || {};
+    const info = document.querySelector('#contact .contact-info');
+    if (info) {
+        const h3 = info.querySelector('h3');
+        if (h3 && P.contactIntro) h3.textContent = P.contactIntro.heading;
+        const introP = info.querySelector('p');
+        if (introP && P.contactIntro) introP.textContent = P.contactIntro.text;
+    }
+    const details = document.querySelector('#contact .contact-details');
+    if (details) {
+        details.innerHTML =
+            contactItem('📱', 'Phone', '<a href="tel:' + esc(c.phoneLink) + '" class="contact-value">' + esc(c.phone) + '</a>') +
+            contactItem('✉️', 'Email', '<a href="mailto:' + esc(c.email) + '" class="contact-value">' + esc(c.email) + '</a>') +
+            contactItem('📍', 'Location', esc(c.location));
+    }
+    const linkedin = document.querySelector('.social-link[aria-label="LinkedIn profile"]');
+    if (linkedin) linkedin.href = c.linkedin;
+    const github = document.querySelector('.social-link[aria-label="GitHub profile"]');
+    if (github) github.href = c.github;
+    const emailLink = document.querySelector('.social-link[aria-label="Send email"]');
+    if (emailLink) emailLink.href = 'mailto:' + c.email;
+}
+
+function contactItem(icon, label, valueHtml) {
+    return '<div class="contact-item">' +
+        '<div class="contact-icon" aria-hidden="true">' + icon + '</div>' +
+        '<div>' +
+            '<strong>' + esc(label) + '</strong>' +
+            '<p class="muted">' + valueHtml + '</p>' +
+        '</div>' +
+    '</div>';
+}
+
+function renderSite() {
+    renderHero();
+    renderAbout();
+    renderExperience();
+    renderProjects();
+    renderCertifications();
+    renderEducation();
+    renderContact();
+}
+
+// ============ Download profile modal ============
+const downloadFab = document.getElementById('downloadFab');
+const downloadModal = document.getElementById('downloadModal');
+const dlTemplateList = document.getElementById('dlTemplateList');
+let dlLastFocused = null;
+
+// Show the floating download button once the user has scrolled a little
+function toggleDownloadFab() {
+    if (!downloadFab) return;
+    downloadFab.classList.toggle('visible', window.scrollY > 300);
+}
+
+// Small download arrow used inside each card
+function dlIconMarkup() {
+    return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
+}
+
+// A friendly filename for the saved download, e.g. PraveenKumar_Amazon.docx
+function dlFileName(template) {
+    const base = 'PraveenKumar_' + String(template.label).replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '');
+    const ext = (String(template.file).split('.').pop() || 'docx');
+    return base + '.' + ext;
+}
+
+// ------------------------------------------------------------
+// Map the master PROFILE_DATA into the flat shape the .docx
+// merge fields expect. This is the SINGLE mapping used for every
+// template, so all downloads always reflect the latest data.
+// (Field names here must match the {tags} inside the templates —
+//  see TEMPLATE_FIELD_GUIDE.md.)
+// ------------------------------------------------------------
+function buildResumeData() {
+    const P = window.PROFILE_DATA;
+    if (!P) return {};
+    const c = P.contact || {};
+    const matrix = P.skillMatrix || [];
+    return {
+        fullName: P.identity.fullName,
+        title: P.identity.title,
+        summary: P.identity.summary,
+        email: c.email, phone: c.phone, location: c.location,
+        linkedin: c.linkedin, github: c.github,
+        experience: (P.experience || []).map((e) => ({
+            role: e.role, company: e.company, dates: e.dates, bullets: (e.bullets || []).slice()
+        })),
+        skillGroups: matrix.map((g) => ({
+            label: g.dir.replace('~/', '').replace(/-/g, ' '),
+            items: (g.items || []).join(', ')
+        })),
+        skillsInline: matrix.reduce((a, g) => a.concat(g.items || []), []).join('  •  '),
+        projects: (P.projects || []).map((pr) => ({
+            name: pr.name, description: pr.description, techInline: (pr.tags || []).join(', ')
+        })),
+        certifications: (P.certifications || []).map((ct) => ({ name: ct.name, detail: ct.detail })),
+        education: (P.education || []).map((ed) => ({
+            degree: ed.degree, field: ed.field, institution: ed.institution,
+            dates: ed.dates, notesInline: (ed.notes || []).join('; ')
+        }))
+    };
+}
+
+// Trigger a browser download for a generated Blob
+function dlSaveBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
+}
+
+// Fill the chosen .docx template with the latest master data and download it
+function generateResume(template, cardEl) {
+    const PizZip = window.PizZip;
+    const DocxtemplaterModule = window.docxtemplater;
+    const Docxtemplater = DocxtemplaterModule && (DocxtemplaterModule.default || DocxtemplaterModule);
+
+    if (!PizZip || !Docxtemplater) {
+        dlSetStatus('Resume engine not loaded. Please refresh and try again.', 'error');
+        return;
+    }
+    if (cardEl) cardEl.classList.add('is-loading');
+    dlSetStatus('Building your ' + template.label + ' resume…', 'working');
+
+    fetch(template.file)
+        .then((res) => {
+            if (!res.ok) throw new Error('template-missing');
+            return res.arrayBuffer();
+        })
+        .then((buf) => {
+            const zip = new PizZip(buf);
+            const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
+            doc.render(buildResumeData());
+            const out = doc.getZip().generate({
+                type: 'blob',
+                mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            });
+            dlSaveBlob(out, dlFileName(template));
+            dlSetStatus('Downloaded ✓  Your ' + template.label + ' resume is ready.', 'success');
+            setTimeout(closeDownloadModal, 1200);
+        })
+        .catch((err) => {
+            if (err && err.message === 'template-missing') {
+                markUnavailable(template.id);
+                dlSetStatus('That template file isn\'t uploaded yet.', 'error');
+            } else {
+                dlSetStatus('Sorry — could not build that resume. See console for details.', 'error');
+                // eslint-disable-next-line no-console
+                console.error('Resume generation failed:', err);
+            }
+        })
+        .finally(() => { if (cardEl) cardEl.classList.remove('is-loading'); });
+}
+
+function dlSetStatus(msg, kind) {
+    const el = document.getElementById('dlStatus');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'dl-status' + (kind ? ' dl-status-' + kind : '');
+}
+
+function renderTemplates() {
+    if (!dlTemplateList) return;
+    const list = Array.isArray(window.RESUME_TEMPLATES) ? window.RESUME_TEMPLATES : [];
+    if (!list.length) {
+        dlTemplateList.innerHTML = '<p class="dl-card-desc">No templates configured yet. Add entries to resume-templates.js.</p>';
+        return;
+    }
+    dlTemplateList.innerHTML = list.map((t) => {
+        const badge = t.isDefault ? '<span class="dl-badge">Default</span>' : '';
+        const icon = t.icon ? t.icon : '📄';
+        return (
+            '<button type="button" class="dl-card" data-dl-id="' + t.id + '">' +
+                '<span class="dl-card-icon" aria-hidden="true">' + icon + '</span>' +
+                '<span class="dl-card-body">' +
+                    '<span class="dl-card-title">' + t.label + ' ' + badge + '</span>' +
+                    '<span class="dl-card-desc">' + (t.description || '') + '</span>' +
+                '</span>' +
+                '<span class="dl-card-cta" aria-hidden="true">' + dlIconMarkup() + '</span>' +
+            '</button>'
+        );
+    }).join('');
+    verifyTemplateAvailability(list);
+}
+
+// On served (http/https) sites, disable cards whose file is missing so
+// visitors never hit a broken download. Skipped on file:// where HEAD
+// requests aren't reliable.
+function verifyTemplateAvailability(list) {
+    if (location.protocol === 'file:') return;
+    list.forEach((t) => {
+        fetch(t.file, { method: 'HEAD' })
+            .then((res) => { if (!res.ok) markUnavailable(t.id); })
+            .catch(() => { /* network/permission hiccup — leave the card enabled */ });
+    });
+}
+
+function markUnavailable(id) {
+    if (!dlTemplateList) return;
+    const card = dlTemplateList.querySelector('[data-dl-id="' + id + '"]');
+    if (!card) return;
+    card.classList.add('is-unavailable');
+    card.setAttribute('disabled', 'disabled');
+    card.setAttribute('aria-disabled', 'true');
+    const desc = card.querySelector('.dl-card-desc');
+    if (desc) desc.textContent = 'Coming soon — file not uploaded yet.';
+}
+
+function openDownloadModal() {
+    if (!downloadModal) return;
+    dlLastFocused = document.activeElement;
+    downloadModal.classList.add('open');
+    downloadModal.setAttribute('aria-hidden', 'false');
+    if (downloadFab) downloadFab.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    const first = downloadModal.querySelector('.dl-card:not(.is-unavailable), .dl-modal-close');
+    if (first) first.focus();
+}
+
+function closeDownloadModal() {
+    if (!downloadModal) return;
+    downloadModal.classList.remove('open');
+    downloadModal.setAttribute('aria-hidden', 'true');
+    if (downloadFab) downloadFab.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (dlLastFocused && typeof dlLastFocused.focus === 'function') dlLastFocused.focus();
+}
+
+function initDownloadModal() {
+    if (!downloadFab || !downloadModal) return;
+    renderTemplates();
+
+    downloadFab.addEventListener('click', openDownloadModal);
+
+    downloadModal.querySelectorAll('[data-dl-close]').forEach((el) => {
+        el.addEventListener('click', closeDownloadModal);
+    });
+
+    // Generate + download the picked template with the latest master data
+    if (dlTemplateList) {
+        dlTemplateList.addEventListener('click', (e) => {
+            const card = e.target.closest('.dl-card');
+            if (!card || card.classList.contains('is-unavailable') || card.classList.contains('is-loading')) return;
+            const id = card.getAttribute('data-dl-id');
+            const template = (window.RESUME_TEMPLATES || []).find((t) => t.id === id);
+            if (template) generateResume(template, card);
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && downloadModal.classList.contains('open')) {
+            closeDownloadModal();
+        }
+    });
+}
+
 // Keep footer year current
 function setFooterYear() {
     const yearEl = document.getElementById('year');
@@ -500,6 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypedRole();
     initTerminal();
     initCounters();
+    renderSite();
     populateSkills();
     populateSkillMatrix();
     initSkillObserver();
@@ -508,4 +876,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setFooterYear();
     updateActiveNavLink();
     toggleScrollTopButton();
+    initDownloadModal();
+    toggleDownloadFab();
 });
