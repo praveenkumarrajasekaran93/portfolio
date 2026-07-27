@@ -17,11 +17,15 @@
 //  download menu. (A card whose id has no builder is auto-disabled.)
 //
 //  Fields per entry:
-//    id           unique short key — MUST match a RESUME_PDF_BUILDERS key
+//    id           unique short key — for GENERATED layouts, MUST match a
+//                 RESUME_PDF_BUILDERS key in resume-pdf.js
 //    label        name shown on the card (e.g. "Amazon")
 //    description  one short line
 //    icon         optional emoji shown on the card
 //    isDefault    set true on EXACTLY ONE entry (gets a badge)
+//    file         OPTIONAL — path to a ready-made PDF (relative to index.html).
+//                 If set, that file is downloaded AS-IS instead of being
+//                 generated from profile-data.js (no builder needed).
 // ============================================================
 
 const RESUME_TEMPLATES = [
@@ -31,6 +35,14 @@ const RESUME_TEMPLATES = [
         description: 'Clean single-column layout that applicant tracking systems parse reliably.',
         icon: '📄',
         isDefault: true
+    },
+    {
+        id: 'original-pdf',
+        label: 'Original Résumé (PDF)',
+        description: 'My ready-made résumé, downloaded exactly as designed.',
+        file: 'PRAVEENKUMAR_PR.pdf',
+        icon: '⭐',
+        isDefault: false
     },
     {
         id: 'modern-two-column',

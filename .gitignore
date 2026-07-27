@@ -2,8 +2,8 @@
 .aider*
 *-tags-cache*
 
-# Original profile documents (not needed in repo)
-PRAVEENKUMAR_PR.pdf
+# Original source text (not deployed). The PDF IS deployed — it's offered
+# as a download in the resume modal (see resume-templates.js 'original-pdf').
 PRAVEENKUMAR_PR.txt
 
 # Track only portfolio files

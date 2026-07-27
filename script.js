@@ -697,10 +697,44 @@ function buildResumeData() {
     };
 }
 
+// Download a template. Two kinds:
+//   • static file  (template.file set)  → download that ready-made PDF as-is
+//   • generated     (otherwise)         → build a PDF from the latest master data
+function generateResume(template, cardEl) {
+    if (template.file) {
+        downloadStaticResume(template, cardEl);
+        return;
+    }
+    generatePdfResume(template, cardEl);
+}
+
+// Download a pre-made PDF (e.g. an exported resume) straight from the server.
+function downloadStaticResume(template, cardEl) {
+    if (cardEl) cardEl.classList.add('is-loading');
+    dlSetStatus('Downloading your ' + template.label + ' resume…', 'working');
+    try {
+        const a = document.createElement('a');
+        a.href = template.file;
+        a.download = dlFileName(template);
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        dlSetStatus('Downloaded ✓  Your ' + template.label + ' resume is ready.', 'success');
+        setTimeout(closeDownloadModal, 1200);
+    } catch (err) {
+        dlSetStatus('Sorry — could not download that file. See console for details.', 'error');
+        // eslint-disable-next-line no-console
+        console.error('Resume download failed:', err);
+    } finally {
+        if (cardEl) cardEl.classList.remove('is-loading');
+    }
+}
+
 // Build the chosen layout as a PDF from the latest master data and download it.
 // Fully client-side via pdfmake (vendor/pdfmake.min.js + vfs_fonts.js) — no fetch,
 // no server, works the same on GitHub Pages and offline.
-function generateResume(template, cardEl) {
+function generatePdfResume(template, cardEl) {
     const pdfMake = window.pdfMake;
     const buildDoc = window.buildResumePdfDoc;
 
@@ -757,12 +791,20 @@ function renderTemplates() {
     verifyTemplateAvailability(list);
 }
 
-// Disable any card that has no matching PDF layout builder, so visitors
-// never pick a template we can't actually generate.
+// Disable any card we can't fulfil: a generated template needs a matching
+// layout builder; a static template needs its file to exist (HEAD-checked
+// on served sites, skipped on file:// where HEAD isn't reliable).
 function verifyTemplateAvailability(list) {
     const builders = window.RESUME_PDF_BUILDERS || {};
     list.forEach((t) => {
-        if (!builders[t.id]) markUnavailable(t.id);
+        if (t.file) {
+            if (location.protocol === 'file:') return;
+            fetch(t.file, { method: 'HEAD' })
+                .then((res) => { if (!res.ok) markUnavailable(t.id); })
+                .catch(() => { /* network/permission hiccup — leave the card enabled */ });
+        } else if (!builders[t.id]) {
+            markUnavailable(t.id);
+        }
     });
 }
 
